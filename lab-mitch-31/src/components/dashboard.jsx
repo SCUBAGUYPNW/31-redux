@@ -2,16 +2,19 @@ import React from 'react'
 import {connect} from 'react-redux';
 
 import {
-    budgetList,
+    budgetCreate,
     budgetUpdate,
     budgetRemove,
-} from '../actions/tracker-actions.jsx' // all actions for the budget tracker.
+} from '../actions/budget-category-actions.jsx'; // all actions for the budget tracker.
+
+import BudgetForm from './budget-form.jsx'
+import BudgetCategoryList from './budget-list.jsx'
 
 class Dashboard extends React.Component {
-    constuctor(props) {
+    constructor(props) {
         super(props);
         this.state = {
-            catagory: '',
+            category: '',
             description: '',
             notes: '',
             amount: 0,
@@ -31,12 +34,9 @@ class Dashboard extends React.Component {
         <h1>Budget/expense tracker</h1>
         <h2>What do you want to track?</h2>
         </div>
-        <budgetForm 
-            name="create" 
-            handleChange={this.handleChange}>
-            </budgetForm>
+        <BudgetForm name="create"/>
         
-        <budgetList></budgetList>
+        <BudgetCategoryList/>
         </div>     
     }
 }
@@ -48,10 +48,10 @@ const mapStateToProps = state => ({
 
  const mapDispatchToProps = (dispatch, getState) => {
      return {
-         budgetList: () => dispatch(budgetList()),
-         budgetUpdate: values => dispatch(budgetUpdate(values)),
-         budgetRemove: id => dispatch(budgetRemove(id),)
+         budgetList: (val) => dispatch(budgetCreate(val)),
+         budgetUpdate: (val) => dispatch(budgetUpdate(val)),
+         budgetRemove: (id) => dispatch(budgetRemove(id),)
      };
  }
 
- export default Dashboard;
+ export default connect(mapStateToProps, mapDispatchToProps) (Dashboard);

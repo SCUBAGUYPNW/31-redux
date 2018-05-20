@@ -13,38 +13,39 @@ import BudgetForm from './budget-form.jsx';
 class BudgetItem extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isEditing: false,                
+        }
         this.handleRemove = this.handleRemove.bind(this);
         this.toggleEdit = this.toggleEdit.bind(this);
-        this.toggleOffEdit = this.toggleOffEdit.bind(this);
     }
 toggleEdit(event) {
-    let id = event.target.id;
-    this.props.budgetcategoryUpdate({isEditing: true, id});
+    this.setState({isEditing: !this.state.isEditing})
 }
-toggleOffEdit(event) {
-    let id = event.target.id;
-    this.props.budgetcategoryUpdate({isEditing: false, id});
-}
+
 handleRemove(event) {
+    console.log('Inside Handle Remove')
     event.preventDefault();
     let id = this.props.id;
     this.props.budgetRemove(id);
 }
 render() {
     console.log('inside budget item -this.props', this.props);
-    if (this.props.isEditing === true) {
-    
+    if (this.state.isEditing === true) {
+    console.log('budget-item is editing', this.props)
         return (
             <div>
-                <BudgetForm name="update" id={this.props.id}/><button onClick={this.toggleOffEdit} id={this.props.id}>Cancel</button>
+                <BudgetForm name="update" budgetCategory={this.props.budgetCategory} id={this.props.id} onClick={this.toggleEdit}/><button onClick={this.toggleEdit} id={this.props.id}>Cancel</button>
             </div>
         )
     }
     return (
         <li id={this.props.id}>
         {this.props.category}: {this.props.description}: {this.props.notes}: {this.props.amount}
+        {' '}
         <button id={this.props.id} onClick={this.handleRemove}>REMOVE</button> 
-        <button id={this.props.id} onClick={this.toggleEdit}>Edit</button>
+        {' '}
+        <button id={this.props.id} onClick={this.toggleEdit}>EDIT</button>
         </li>
     )
 }
@@ -57,6 +58,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch, getState) => {
     return {
         budgetRemove: id => dispatch(budgetRemove(id)),
+        budgetUpdate: value => dispatch(budgetUpdate(value)),
     }
 }
 

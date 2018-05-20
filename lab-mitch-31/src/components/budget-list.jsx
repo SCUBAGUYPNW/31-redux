@@ -16,15 +16,16 @@ class BudgetCategoryList extends React.Component {
         // });
     }
 render() {
-    console.log(this.props)
+    console.log('inside buget-list render',this.props)
     return (
         <div>
             <h2>Current Budget Items:</h2>
             <ul>
-            {this.props.budgetCategories.map(budgetCategory => 
+            {this.props.budgetCategories ? 
+            this.props.budgetCategories.map(budgetCategory => 
               <BudgetItem key={budgetCategory.id} id={budgetCategory.id} category={budgetCategory.category} description={budgetCategory.description} notes={budgetCategory.notes} amount={budgetCategory.amount} isEditing={budgetCategory.isEditing}/>
-        )
-    }
+            ) : null
+        }
         </ul>
         </div>
     )
